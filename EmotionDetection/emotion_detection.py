@@ -9,14 +9,14 @@ def emotion_detector(text):
         return "Please input text"
 
     PAYLOAD = { "raw_document": { "text": text}}
-    response = json.loads(requests.post(URL, json=PAYLOAD, headers=HEADERS).text)['emotionPredictions'][0]['emotion']
+    response = requests.post(URL, json=PAYLOAD, headers=HEADERS)
 
     if response.status_code == 200:
-        sweet_emotion = max(list(response.values()))
-
-        for emotion, score in response.items():
+        json_response = json.loads(response.text)['emotionPredictions'][0]['emotion']
+        sweet_emotion = max(list(json_response.values()))
+        for emotion, score in json_response.items():
             if score == sweet_emotion:
                 sweet_emotion = emotion
-        response["dominant_emotion"] = sweet_emotion
-        return response
+        json_response["dominant_emotion"] = sweet_emotion
+        return json_response
     
