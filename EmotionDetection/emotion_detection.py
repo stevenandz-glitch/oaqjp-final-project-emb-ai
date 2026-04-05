@@ -17,6 +17,7 @@ def emotion_detector(text):
         for emotion, score in json_response.items():
             if score == sweet_emotion:
                 sweet_emotion = emotion
-        json_response["dominant_emotion"] = sweet_emotion
+        json_response['dominant_emotion'] = sweet_emotion
         return json_response
-    
+    elif response.status_code == 400:
+        return {'fear': None, 'anger': None, 'disgust': None, 'joy': None, 'sadness': None, 'dominant_emotion': None}
